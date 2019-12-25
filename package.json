@@ -1,0 +1,29 @@
+{
+  "name": "primitive-cloud-server",
+  "version": "1.0.0",
+  "description": "A primitive Node server for Scratch 3.0 cloud variables; it's not made for large-scale projects and can easily be tricked by those pesky JavaScript programmers",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SheepTester/primitive-cloud-server.git"
+  },
+  "keywords": [
+    "scratch",
+    "cloud",
+    "variables",
+    "server"
+  ],
+  "author": "SheepTester",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SheepTester/primitive-cloud-server/issues"
+  },
+  "homepage": "https://github.com/SheepTester/primitive-cloud-server#readme",
+  "dependencies": {
+    "ws": "^7.2.1"
+  }
+}
