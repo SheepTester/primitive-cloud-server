@@ -10,18 +10,20 @@ function readFile (file) {
 }
 function writeFile (file, data) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(file, data, err(err) => {
+    fs.writeFile(file, data, err => {
       if (err) reject(err)
       else resolve()
     })
   })
 }
+// Create a cloud-vars folder if it doesn't already exist
+fs.mkdir(path.resolve(__dirname, './cloud-vars/'), () => {})
 
 const WebSocket = require('ws')
 const wss = new WebSocket.Server({ port: 3000 })
 
 const projects = new Map()
-const validProjectId = /^\d+$/
+const validProjectId = /^\w+$/
 
 async function getProject (id) {
   const project = projects.get(id)
@@ -29,12 +31,16 @@ async function getProject (id) {
 
   if (!validProjectId.test(id)) return null
 
-  const savePath = path.resolve(__dirname, `./cloud-vars/${id}`)
-  const data = await readFile(savePath)
-  const variables = data ? JSON.parse(data) : {}
+  const savePath = path.resolve(__dirname, `./cloud-vars/${id}.json`)
+  let variables
+  try {
+    variables = JSON.parse(await readFile(savePath))
+  } catch (err) {
+    variables = {}
+  }
   const connections = new Set()
   let saveTimeout = null
-  const project = {
+  const projectData = {
     variables,
     connections,
     save () {
@@ -52,8 +58,8 @@ async function getProject (id) {
       }
     }
   }
-  projects.set(id, project)
-  return project
+  projects.set(id, projectData)
+  return projectData
 }
 
 function reply (ws, messages) {
@@ -117,4 +123,12 @@ wss.on('connection', ws => {
         break
     }
   })
+
+  ws.on('close', () => {
+    if (project) {
+      project.connections.delete(ws)
+    }
+  })
 })
+
+console.log('All ears at ws://localhost:3000/');
