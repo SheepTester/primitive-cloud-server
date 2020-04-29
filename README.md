@@ -5,7 +5,7 @@ Video tutorial:
 
 [![thumbnail of video tutorial](https://img.youtube.com/vi/xVJWqN264fM/0.jpg)](https://www.youtube.com/watch?v=xVJWqN264fM)
 
-1. You'll need to have [https://nodejs.org/en/](Node) installed first.
+1. You'll need to have [Node](https://nodejs.org/en/) installed first.
 
 2. ```sh
    git clone https://github.com/SheepTester/primitive-cloud-server.git
