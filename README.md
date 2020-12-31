@@ -5,9 +5,11 @@ A primitive Node server for Scratch 3.0 cloud variables; it's not made for large
 npm start
 ```
 
-Makes a WebSocket thing available at ws://localhost:3000/
+Makes a WebSocket server available at `ws://localhost:3000/` and an HTTP server at http://localhost:3000/.
 
-Uses the Node [ws](https://github.com/websockets/ws) library
+Cloud variables get stored in the [cloud-vars/ folder](./cloud-vars/).
+
+You can pass a few command line arguments; do `npm start -- --help` for a list.
 
 ## Details
 

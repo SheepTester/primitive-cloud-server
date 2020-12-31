@@ -1,3 +1,22 @@
+const parseArgs = require('minimist')
+const {
+  port = 3000,
+  help
+} = parseArgs(process.argv.slice(2), {
+  boolean: ['help'],
+  alias: {
+    p: 'port',
+    h: 'help'
+  }
+})
+
+if (help) {
+  console.log('npm start -- [OPTIONS]')
+  console.log('--port=<port> (-p <port>)\n\tSet the port for the server. (Default 3000)')
+  console.log('--help (-h)\n\tDisplay help')
+  process.exit(0)
+}
+
 const fs = require('fs')
 const path = require('path')
 function readFile (file) {
@@ -16,11 +35,14 @@ function writeFile (file, data) {
     })
   })
 }
-// Create a cloud-vars folder if it doesn't already exist
-fs.mkdir(path.resolve(__dirname, './cloud-vars/'), () => {})
 
-const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: 3000 })
+const express = require('express')
+const app = express()
+require('express-ws')(app)
+
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'index.html'))
+})
 
 const projects = new Map()
 const validProjectId = /^\w+$/
@@ -66,12 +88,17 @@ function reply (ws, messages) {
   ws.send(messages.map(message => JSON.stringify(message) + '\n').join(''))
 }
 
-wss.on('connection', ws => {
+app.ws('/', ws => {
   let handshaken = false
   let project = null
 
   ws.on('message', data => {
-    const message = JSON.parse(data)
+    let message
+    try {
+      message = JSON.parse(data)
+    } catch (err) {
+      return
+    }
     switch (message.method) {
       case 'handshake':
         if (!handshaken) {
@@ -131,4 +158,7 @@ wss.on('connection', ws => {
   })
 })
 
-console.log('All ears at ws://localhost:3000/');
+app.listen(port, () => {
+  console.log(`Your cloud server is available, at least locally, at ws://localhost:${port}/.`)
+  console.log('Press ctrl+C to stop the server.')
+})
