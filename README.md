@@ -1,11 +1,20 @@
 # primitive-cloud-server
 A primitive Node server for Scratch 3.0 cloud variables; it's not made for large-scale projects and can easily be tricked by those pesky JavaScript programmers.
 
-```sh
-npm start
-```
+Video tutorial:
 
-Makes a WebSocket server available at `ws://localhost:3000/` and an HTTP server at http://localhost:3000/.
+[![thumbnail of video tutorial](https://img.youtube.com/vi/xVJWqN264fM/0.jpg)](https://www.youtube.com/watch?v=xVJWqN264fM)
+
+1. You'll need to have [Node](https://nodejs.org/en/) installed first.
+
+2. ```sh
+   git clone https://github.com/SheepTester/primitive-cloud-server.git
+   cd primitive-cloud-server
+   npm install
+   npm start
+   ```
+
+This makes a local WebSocket server available at `ws://localhost:3000/` and an HTTP server at http://localhost:3000/.
 
 Cloud variables get stored in the [cloud-vars/ folder](./cloud-vars/).
 
