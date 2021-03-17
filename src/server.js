@@ -11,9 +11,12 @@ function startServer (port) {
   const app = express()
   const cloudServer = new CloudServer()
 
+  app.disable('x-powered-by')
   expressWs(app)
 
-  app.use(express.static(path.resolve(__dirname, '../static/')))
+  app.use(express.static(path.resolve(__dirname, '../static/'), {
+    extensions: ['html', 'htm']
+  }))
 
   app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../index.html'))
