@@ -36,4 +36,4 @@ When the client first connects to the server, Scratch sends a "handshake" messag
 { "method": "set", "name": "☁ newish variable", "value": "0" }
 ```
 
-After that the client can send a "set" message to the server, which will broadcast it to the other clients on the project.
+After that the client can send a "set" message (same structure) to the server, which will broadcast it to the other clients on the project.
