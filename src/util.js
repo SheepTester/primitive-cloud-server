@@ -17,3 +17,11 @@ module.exports.writeFile = (filePath, data) => {
     })
   })
 }
+
+module.exports.exists = filePath => {
+  return new Promise(resolve => {
+    fs.access(filePath, err => {
+      resolve(!err)
+    })
+  })
+}

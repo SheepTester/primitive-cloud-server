@@ -6,21 +6,25 @@ const expressWs = require('express-ws')
 const colours = require('colors/safe')
 
 const CloudServer = require('./cloud-server.js')
+const fsUtil = require('./util.js')
 
-function startServer ({ port, lockVars }) {
+async function startServer ({ port, lockVars }) {
   const app = express()
   const cloudServer = new CloudServer({ lockVars })
 
   app.disable('x-powered-by')
   expressWs(app)
 
+  const oldIndexHtmlPath = path.resolve(__dirname, '../index.html')
+  if (await fsUtil.exists(oldIndexHtmlPath)) {
+    app.get('/', (req, res, next) => {
+      res.sendFile(oldIndexHtmlPath)
+    })
+  }
+
   app.use(express.static(path.resolve(__dirname, '../static/'), {
     extensions: ['html', 'htm']
   }))
-
-  app.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../index.html'))
-  })
 
   app.ws('/', cloudServer.handleWsConnection)
 
