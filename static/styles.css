@@ -16,15 +16,24 @@ div {
 }
 a:link,
 a:visited {
-  color: #38488f;
+  color: #2196f3;
   text-decoration: none;
 }
 a:hover {
   text-decoration: underline;
 }
+code {
+  background-color: #e9e9ec;
+  padding: 2px 5px;
+  border-radius: 2px;
+}
 @media (max-width: 700px) {
+  body {
+    background-color: #fdfdff;
+  }
   div {
     margin: 0 auto;
     width: auto;
+    box-shadow: none;
   }
 }

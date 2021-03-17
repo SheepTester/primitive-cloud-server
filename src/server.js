@@ -1,6 +1,9 @@
 const path = require('path')
+const publicIp = require('public-ip')
+const internalIp = require('internal-ip')
 const express = require('express')
 const expressWs = require('express-ws')
+const colours = require('colors/safe')
 
 const CloudServer = require('./cloud-server.js')
 
@@ -22,9 +25,14 @@ function startServer (port) {
     res.status(404).sendFile(path.resolve(__dirname, '../static/404.html'))
   })
 
-  app.listen(port, () => {
-    console.log(`Your cloud server is available, at least locally, at ws://localhost:${port}/.`)
-    console.log('Press ctrl+C to stop the server.')
+  app.listen(port, async () => {
+    console.log(colours.green('I\'m now running your cloud server!'))
+    console.log('You can access it...')
+    console.log(`  • on your computer at ${colours.cyan(`ws://localhost:${port}/`)} (use this for testing)`)
+    console.log(`  • locally within your network at ${colours.blue(`ws://${await internalIp.v4()}:${port}/`)} (maybe)`)
+    console.log(`  • publicly at ${colours.blue(`ws://${await publicIp.v4()}:${port}/`)}, but ONLY if you've set up port forwarding on your router`)
+    console.log(colours.yellow(`I\'m also serving files from the static/ folder, which you can access in your browser at ${colours.blue(`http://localhost:${port}/`)}.`))
+    console.log(colours.red('Press control+C to stop the server.'))
   })
 }
 
