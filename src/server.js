@@ -7,9 +7,9 @@ const colours = require('colors/safe')
 
 const CloudServer = require('./cloud-server.js')
 
-function startServer (port) {
+function startServer ({ port, lockVars }) {
   const app = express()
-  const cloudServer = new CloudServer()
+  const cloudServer = new CloudServer({ lockVars })
 
   app.disable('x-powered-by')
   expressWs(app)
@@ -34,7 +34,7 @@ function startServer (port) {
     console.log(`  • on your computer at ${colours.cyan(`ws://localhost:${port}/`)} (use this for testing)`)
     console.log(`  • locally within your network at ${colours.blue(`ws://${await internalIp.v4()}:${port}/`)} (maybe)`)
     console.log(`  • publicly at ${colours.blue(`ws://${await publicIp.v4()}:${port}/`)}, but ONLY if you've set up port forwarding on your router`)
-    console.log(colours.yellow(`I\'m also serving files from the static/ folder, which you can access in your browser at ${colours.blue(`http://localhost:${port}/`)}.`))
+    console.log(colours.yellow(`I'm also serving files from the static/ folder, which you can access in your browser at ${colours.blue(`http://localhost:${port}/`)}.`))
     console.log(colours.red('Press control+C to stop the server.'))
   })
 }

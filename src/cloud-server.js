@@ -5,8 +5,9 @@ const { readFile, writeFile } = require('./util.js')
 const validProjectId = /^\w+$/
 
 class CloudServer {
-  constructor () {
+  constructor ({ lockVars = false } = {}) {
     this.projects = new Map()
+    this.lockVars = lockVars
 
     this.handleWsConnection = this.handleWsConnection.bind(this)
   }
@@ -20,9 +21,12 @@ class CloudServer {
     const savePath = path.resolve(__dirname, `../cloud-vars/${id}.json`)
     let variables
     try {
-      variables = JSON.parse(await readFile(savePath))
+      variables = JSON.parse(await readFile(savePath).catch(() => '{}'))
     } catch (err) {
-      variables = {}
+      console.error(`Encountered an error parsing the cloud variable data at cloud-vars/${id}.json:`)
+      console.error(err)
+      console.error('This might mean that the data are corrupt, but it may be recoverable.')
+      return null
     }
     const connections = new Set()
     let saveTimeout = null
@@ -61,25 +65,28 @@ class CloudServer {
       try {
         message = JSON.parse(data)
       } catch (err) {
+        console.error('I received invalid JSON over the Websocket connection.')
+        console.error(data)
+        console.error(err)
+        console.error('This might mean that someone is trying to tamper with your server.')
         return
       }
       switch (message.method) {
         case 'handshake':
           if (!handshaken) {
             handshaken = true
-            this.getProject(message.project_id)
-              .then(projectData => {
-                if (projectData) {
-                  project = projectData
-                  project.connections.add(ws)
-                  this.reply(ws, Object.entries(project.variables)
-                    .map(([variable, value]) => ({
-                      method: 'set',
-                      name: variable,
-                      value
-                    })))
-                }
-              })
+            this.getProject(message.project_id).then(projectData => {
+              if (projectData) {
+                project = projectData
+                project.connections.add(ws)
+                const changes = Object.entries(project.variables).map(([variable, value]) => ({
+                  method: 'set',
+                  name: variable,
+                  value
+                }))
+                this.reply(ws, changes)
+              }
+            })
           }
           break
         case 'create':
@@ -95,7 +102,7 @@ class CloudServer {
           }
           break
         case 'rename':
-          if (project) {
+          if (project && !this.lockVars) {
             project.variables[message.new_name] = project.variables[message.name]
             delete project[message.name]
             project.announce(ws, [{
@@ -107,11 +114,13 @@ class CloudServer {
           }
           break
         case 'delete':
-          if (project) {
+          if (project && !this.lockVars) {
             delete project.variables[message.name]
             project.save()
           }
           break
+        default:
+          console.error(`I received an unknown method ${message.method}.`)
       }
     })
 
