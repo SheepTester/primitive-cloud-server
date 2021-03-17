@@ -25,7 +25,7 @@ class CloudServer {
     } catch (err) {
       console.error(`Encountered an error parsing the cloud variable data at cloud-vars/${id}.json:`)
       console.error(err)
-      console.error('This might mean that the data are corrupt, but it may be recoverable.')
+      console.error('This might mean that the file is corrupt, but it may be recoverable.')
       return null
     }
     const connections = new Set()
@@ -33,14 +33,14 @@ class CloudServer {
     const projectData = {
       variables,
       connections,
-      save () {
+      save: () => {
         if (saveTimeout) return
         saveTimeout = setTimeout(() => {
           writeFile(savePath, JSON.stringify(variables))
           saveTimeout = null
         }, 1000)
       },
-      announce (announcer, messages) {
+      announce: (announcer, messages) => {
         for (const ws of connections) {
           if (ws !== announcer) {
             this.reply(ws, messages)

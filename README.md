@@ -30,10 +30,11 @@ git stash
 git pull
 git stash pop
 git checkout --theirs -- .
+git reset HEAD
 npm install
 ```
 
-This "stashes" your local changes, pulls (downloads) the new files from GitHub, then tries to bring back the files from the stash. This might cause issues, so this then checks out "their" files ("their" refers to the stash that you're bringing back). Finally, it installs new dependencies from NPM.
+This "stashes" your local changes, pulls (downloads) the new files from GitHub, then tries to bring back the files from the stash. This might cause issues, so this then checks out "their" files ("their" refers to the stash that you're bringing back). For some reason, Git might get confused after this, so we just unstage all the files. Finally, it installs new dependencies from NPM.
 
 ## Details
 
