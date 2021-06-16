@@ -13,7 +13,9 @@ async function startServer ({ port, lockVars, perMessageDeflate }) {
   const cloudServer = new CloudServer({ lockVars })
 
   app.disable('x-powered-by')
-  expressWs(app)
+  expressWs(app, undefined, {
+    wsOptions: { perMessageDeflate }
+  })
 
   const oldIndexHtmlPath = path.resolve(__dirname, '../index.html')
   if (await fsUtil.exists(oldIndexHtmlPath)) {
@@ -26,9 +28,7 @@ async function startServer ({ port, lockVars, perMessageDeflate }) {
     extensions: ['html', 'htm']
   }))
 
-  app.ws('/', cloudServer.handleWsConnection, {
-    wsOptions: { perMessageDeflate }
-  })
+  app.ws('/', cloudServer.handleWsConnection)
 
   app.use((req, res) => {
     res.status(404).sendFile(path.resolve(__dirname, '../static/404.html'))
