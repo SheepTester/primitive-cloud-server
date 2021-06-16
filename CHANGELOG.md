@@ -3,6 +3,7 @@
 ## 2021-06-15
 
 - The cloud server will not stop if there is an error from the WebSocket server.
+- `--per-message-deflate` option to match Scratch's cloud server; disabled by default.
 
 ## 2021-03-16
 
