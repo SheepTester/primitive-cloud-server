@@ -124,6 +124,8 @@ class CloudServer {
       }
     })
 
+    ws.on('error', console.error)
+
     ws.on('close', () => {
       if (project) {
         project.connections.delete(ws)

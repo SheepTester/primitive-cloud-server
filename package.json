@@ -29,6 +29,6 @@
     "express-ws": "^4.0.0",
     "internal-ip": "^6.2.0",
     "minimist": "^1.2.5",
-    "public-ip": "^4.0.3"
+    "public-ip": "^4.0.4"
   }
 }

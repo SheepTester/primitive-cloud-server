@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-06-15
+
+- The cloud server will not stop if there is an error from the WebSocket server.
+
 ## 2021-03-16
 
 - The web server now serves files from the static/ folder. static/404.html is used as the 404 page.
