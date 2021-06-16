@@ -42,9 +42,9 @@ async function startServer ({ port, lockVars, perMessageDeflate }) {
     if (privateIp) {
       console.log(`  • locally within your network at ${colours.blue(`ws://${privateIp}:${port}/`)} (maybe)`)
     }
-    const publicIp = await publicIp.v4().catch(() => null)
-    if (publicIp) {
-      console.log(`  • publicly at ${colours.blue(`ws://${publicIp}:${port}/`)}, but ONLY if you've set up port forwarding on your router`)
+    const ip = await publicIp.v4().catch(() => null)
+    if (ip) {
+      console.log(`  • publicly at ${colours.blue(`ws://${ip}:${port}/`)}, but ONLY if you've set up port forwarding on your router`)
     }
     console.log(colours.yellow(`I'm also serving files from the static/ folder, which you can access in your browser at ${colours.blue(`http://localhost:${port}/`)}.`))
     console.log(colours.red('Press control+C to stop the server.'))
