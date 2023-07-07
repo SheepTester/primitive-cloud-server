@@ -1,1 +1,2 @@
-run="npm start"
+run="npm install; npm start"
+entrypoint = "src/index.js"
