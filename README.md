@@ -3,6 +3,7 @@
 A primitive Node server for Scratch 3.0 cloud variables; it's not made for large-scale projects and can easily be tricked by those pesky JavaScript programmers.
 
 [![Run on Repl.it](https://replit.com/badge/github/SheepTester/primitive-cloud-server)](https://replit.com/new/github/SheepTester/primitive-cloud-server)
+[![Edit in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/github/SheepTester/primitive-cloud-server)
 
 Video tutorial:
 
