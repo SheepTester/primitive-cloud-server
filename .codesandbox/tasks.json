@@ -1,0 +1,18 @@
+{
+    "setupTasks": [
+      {
+        "name": "Startup",
+        "command": "npm install, npm start"
+      }
+    ], 
+    // Adding Start task
+    "tasks": {
+      "npm install; npm start": {
+        "name": "Start",
+        "command": "npm start",
+        "preview": {
+          "port": 3000
+        }
+      }
+    }
+  }
