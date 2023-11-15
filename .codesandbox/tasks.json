@@ -2,7 +2,7 @@
     "setupTasks": [
       {
         "name": "Startup",
-        "command": "npm install"
+        "command": "npm install, npm start"
       }
     ], 
     // Adding Start task
