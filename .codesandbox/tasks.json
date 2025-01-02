@@ -1,13 +1,13 @@
 {
     "setupTasks": [
       {
-        "name": "Startup",
-        "command": "npm install, npm start"
+        "name": "npm installation",
+        "command": "npm install"
       }
     ], 
     // Adding Start task
     "tasks": {
-      "npm install; npm start": {
+      "startServer": {
         "name": "Start",
         "command": "npm start",
         "preview": {
